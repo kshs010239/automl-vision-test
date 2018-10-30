@@ -41,7 +41,7 @@ def require():
 
 def main():
     global project_id, compute_region, model_id, data_path
-    if len(argv) < 3:
+    if len(argv) < 2:
         print("automl_vision.py: invalid argv")
         exit()
 
@@ -78,6 +78,8 @@ def main():
                     if len(filename) == 0 or not os.path.isfile(filename):
                         continue
                     predict(filename)
+    else:
+        print('Command "' + argv[1] + '" not found')
 
 
 
@@ -161,6 +163,10 @@ def check_op(operation_id):
       -H "Authorization: Bearer $(gcloud auth application-default print-access-token)" \
       -H "Content-Type: application/json" \
       https://automl.googleapis.com/v1beta1/' + operation_id + ' 2>/dev/null').read()
+
+    if 'error' in output:
+        print(output)
+        return 
 
     output = json.loads(output)
     if 'error' in output:
