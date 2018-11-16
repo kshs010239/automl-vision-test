@@ -36,6 +36,7 @@ def DIR(dir_path):
             
             
 def upload_data(project_id, dataset_name, dir_path, csv_path):
+    #upload data to google
     system('gsutil cp ' + csv_path + ' gs://' + project_id + '-vcm/csv/')
     remote_data_path = 'gs://' + project_id + '-vcm/csv/' + dataset_name + '.csv' 
     s= ('gsutil -m cp -r ' + DIR(dir_path) + ' gs://' + project_id + '-vcm/img/' + dataset_name)

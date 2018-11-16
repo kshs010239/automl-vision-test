@@ -180,8 +180,6 @@ def display_evaluation(project_id, compute_region, model_id, filter_ = ""):
                 )
             )
 
-    # [END automl_vision_display_evaluation]
-
 
 def predict(
     project_id, compute_region, model_id, file_path, score_threshold="0.5"

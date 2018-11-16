@@ -9,8 +9,9 @@ from create_csv import create_csv, upload_data
 from automl_vision_function import *
 
 
-# A resource that represents Google Cloud Platform location.
 def read_config():
+    # read config to dictionary
+    # config format: "var_name: value"
     config = dict()
     try:
         with open(argv[2], "r") as f:
@@ -28,6 +29,7 @@ def read_config():
     return config 
 
 def get(Dict, key, default = None):
+    # get value from config dictionay
     if key not in Dict or Dict[key] == "":
         return default
     if Dict[key] == "True":
@@ -51,7 +53,7 @@ def main():
         create_config()
         exit()
 
-
+    # extract config
     config = read_config()
     project_id = get(config, "project_id")
     compute_region = get(config, "compute_region", "us-central1")
@@ -90,11 +92,10 @@ def main():
 
 
 def Predict(project_id, compute_region, model_id, data_path):
-    print()
-    print("[predict]")
+    # if data is single file, predict it
     if os.path.isfile(data_path):
         predict(project_id, compute_region, model_id, data_path)
-        
+    # if data is directory, predict all file in it
     else:
         for root, dir, files in os.walk(data_path):
             for f in files:
@@ -107,7 +108,10 @@ def Predict(project_id, compute_region, model_id, data_path):
 def create_config():
     with open(argv[2], "w") as f:
         print("*** Don't input whitespace. ***")
-        print("[Required]")
+        
+        print("[Required]")  
+        
+        # require varible
         required = ["project_id: ", "dataset_name: "]
         for item in required:
             while 1:
@@ -115,6 +119,8 @@ def create_config():
                 if len(answer.split()) > 0:
                     f.write(item + answer + "\n")
                     break
+      
+        # bool varible
         required2 = ["multilabel"]
         for item in required2:
             answer = input(item + "?(y/n):")
@@ -124,7 +130,9 @@ def create_config():
 
         print()
         print("[Optional]")
+        
         print("[enter] will use default setting.")
+        # optional varible
         optional = ["model_name: "]
         for item in optional:
             answer = input(item)
